@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.3.0">
+<eagle version="9.3.1">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -156,7 +156,7 @@
 <layer number="254" name="cooling" color="7" fill="1" visible="no" active="yes"/>
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
-<schematic xreflabel="%F%N/%S.%C%R" xrefpart="/%S.%C%R">
+<schematic xreflabel="%F%N/%S" xrefpart="/%S.%C%R">
 <libraries>
 <library name="frames" urn="urn:adsk.eagle:library:229">
 <description>&lt;b&gt;Frames for Sheet and Layout&lt;/b&gt;</description>
@@ -10125,6 +10125,10 @@ OSHW_LOGO</description>
 <part name="J2" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
 <part name="J3" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
 <part name="LOGO1" library="SparkFun-Aesthetics" library_urn="urn:adsk.eagle:library:507" deviceset="OSHW-LOGO" device="MINI" package3d_urn="urn:adsk.eagle:package:37101/1"/>
+<part name="R4" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="M0805" value="10k"/>
+<part name="R5" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="M0805" value="10k"/>
+<part name="GND3" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
+<part name="GND4" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10195,6 +10199,18 @@ OSHW_LOGO</description>
 <attribute name="NAME" x="103.632" y="129.54" size="1.778" layer="95" font="vector" rot="R90"/>
 </instance>
 <instance part="LOGO1" gate="G$1" x="132.08" y="10.16" smashed="yes"/>
+<instance part="R4" gate="G$1" x="104.14" y="154.94" smashed="yes" rot="R90">
+<attribute name="NAME" x="102.6414" y="151.13" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="R5" gate="G$1" x="93.98" y="137.16" smashed="yes" rot="R90">
+<attribute name="NAME" x="92.4814" y="133.35" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="GND3" gate="1" x="91.88" y="150.78" smashed="yes">
+<attribute name="VALUE" x="91.88" y="150.526" size="1.778" layer="96" align="top-center"/>
+</instance>
+<instance part="GND4" gate="1" x="91.88" y="127.92" smashed="yes">
+<attribute name="VALUE" x="91.88" y="127.666" size="1.778" layer="96" align="top-center"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -10290,6 +10306,19 @@ OSHW_LOGO</description>
 <pinref part="J1" gate="G$1" pin="SHIELD"/>
 <wire x1="45.72" y1="160.02" x2="55.88" y2="160.02" width="0.1524" layer="91"/>
 <label x="50.8" y="160.02" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="104.14" y1="149.86" x2="96.52" y2="149.86" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="149.86" x2="96.52" y2="153.32" width="0.1524" layer="91"/>
+<pinref part="GND3" gate="1" pin="GND"/>
+<wire x1="96.52" y1="153.32" x2="91.88" y2="153.32" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="R5" gate="G$1" pin="1"/>
+<pinref part="GND4" gate="1" pin="GND"/>
+<wire x1="93.98" y1="132.08" x2="91.88" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="91.88" y1="132.08" x2="91.88" y2="130.46" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GPIO2" class="0">
@@ -10411,10 +10440,13 @@ OSHW_LOGO</description>
 <label x="22.86" y="68.58" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="109.22" y1="160.02" x2="86.36" y2="160.02" width="0.1524" layer="91"/>
+<wire x1="109.22" y1="160.02" x2="104.14" y2="160.02" width="0.1524" layer="91"/>
 <label x="86.36" y="160.02" size="1.778" layer="95"/>
 <pinref part="J2" gate="G$1" pin="1"/>
+<wire x1="104.14" y1="160.02" x2="86.36" y2="160.02" width="0.1524" layer="91"/>
 <wire x1="109.22" y1="165.1" x2="109.22" y2="160.02" width="0.1524" layer="91"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<junction x="104.14" y="160.02"/>
 </segment>
 </net>
 <net name="BUTTON_2" class="0">
@@ -10424,10 +10456,13 @@ OSHW_LOGO</description>
 <label x="86.36" y="76.2" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="106.68" y1="142.24" x2="86.36" y2="142.24" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="142.24" x2="93.98" y2="142.24" width="0.1524" layer="91"/>
 <label x="86.36" y="142.24" size="1.778" layer="95"/>
 <pinref part="J3" gate="G$1" pin="2"/>
+<wire x1="93.98" y1="142.24" x2="86.36" y2="142.24" width="0.1524" layer="91"/>
 <wire x1="106.68" y1="139.7" x2="106.68" y2="142.24" width="0.1524" layer="91"/>
+<pinref part="R5" gate="G$1" pin="2"/>
+<junction x="93.98" y="142.24"/>
 </segment>
 </net>
 </nets>
