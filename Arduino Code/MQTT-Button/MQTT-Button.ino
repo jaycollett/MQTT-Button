@@ -12,8 +12,8 @@
 #include <PubSubClient.h>
 
 
-#define phyButton1 5
-#define phyButton2 12
+#define phyButton1 12
+#define phyButton2 5
 
 #define WIFI_SSID "xxxxxxx"
 #define WIFI_PASS "xxxxxxxxx"
