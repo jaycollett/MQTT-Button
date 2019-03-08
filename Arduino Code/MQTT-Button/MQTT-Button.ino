@@ -26,15 +26,13 @@ char  mqtt_username[] = "mqttLabButton";      // username for MQTT broker (USE O
 char  mqtt_password[] = "xxxxxxxxxxxxx";      // password for MQTT broker
 char  mqtt_clientid[] = "mqttLabButton";      // client id for connections to MQTT broker
 
+bool buttonOneOn = false;
+bool buttonTwoOn = false;
+
 const String HOSTNAME  = "mqttLabButton";
 const String baseTopic = "mqttLabButton";
 const String buttonOneTopic = baseTopic + "/" + "button1";
 const String buttonTwoTopic = baseTopic + "/" + "button2";
-
-String strTopic;
-String strPayload;
-bool button1On = false;
-bool button2On = false;
 
 IPAddress ip;
 WiFiClient WiFiClient;
@@ -77,6 +75,8 @@ void setup() {
 
 void loop() {
 
+   MQTT_connect(); // connect to wifi/mqtt as needed
+
   // loop indefinitely, checking to see if someone has hit the doorbell button
   // doorbell sense pin will go HIGH if the doorbell button is being pushed
   if (digitalRead(phyButton1) == HIGH) {
@@ -84,54 +84,37 @@ void loop() {
     if (digitalRead(phyButton1) == HIGH) {
       Serial.println("Somone hit button 1, send the MQTT message");
       // toggle on/off based on state of button
-      if(button1On){
+      if(buttonOneOn){
         mqttclient.publish(buttonOneTopic.c_str(), "OFF");
-        Serial.println("Sent off payload for button 1");
+        buttonOneOn = false;
+        Serial.println("Sent OFF payload for button 1");
       }else{
         mqttclient.publish(buttonOneTopic.c_str(), "ON");
-        Serial.println("Sent on payload for button 1");
+        buttonOneOn = true;
+        Serial.println("Sent ON payload for button 1");
       }
-      delay(1000); // give time for the payload to register, and prevent silly button mashers from being dumb.
+      delay(1000); // give time for the payload to register
     }
   }
 
-}
-
-void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
-
-  payload[length] = '\0';
-  strTopic = String((char*)topic);
-  if (strTopic == buttonOneTopic)
-  {
-    if (String((char*)payload) == "ON")
-    {
-      Serial.println("Button ONE State Is Now ON");
-      button1On = true;
-    }
-    else
-    {
-      Serial.println("Button ONE State Is Now OFF");
-      button1On = false;
-    }
-  } else {
-    if (String((char*)payload) == "ON")
-    {
-      Serial.println("Button TWO State Is Now ON");
-      button2On = true;
-    }
-    else
-    {
-      Serial.println("Button TWO State Is Now OFF");
-      button2On = false;
+  if (digitalRead(phyButton2) == HIGH) {
+    delay(150); // poor man's debounce
+    if (digitalRead(phyButton2) == HIGH) {
+      Serial.println("Somone hit button 2, send the MQTT message");
+      // toggle on/off based on state of button
+      if(buttonTwoOn){
+        mqttclient.publish(buttonTwoTopic.c_str(), "OFF");
+        buttonTwoOn = false;
+        Serial.println("Sent OFF payload for button 2");
+      }else{
+        mqttclient.publish(buttonTwoTopic.c_str(), "ON");
+        buttonTwoOn = true;
+        Serial.println("Sent ON payload for button 2");
+      }
+      delay(1000); // give time for the payload to register
     }
   }
+
 }
 
 
@@ -165,9 +148,6 @@ void MQTT_connect() {
       delay(2000);
     }
   }
-  // resubscribe to our state topics
-  mqttclient.subscribe(buttonOneTopic.c_str());
-  mqttclient.subscribe(buttonTwoTopic.c_str());
 
   Serial.println("MQTT Connected!");
 }
