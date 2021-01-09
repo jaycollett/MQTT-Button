@@ -50,7 +50,6 @@ void setup() {
   WiFi.mode(WIFI_STA);
 
   mqttclient.setServer(mqtt_server, MQTT_PORT);
-  mqttclient.setCallback(callback);
 
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED) {
